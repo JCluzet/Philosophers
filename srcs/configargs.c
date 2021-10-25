@@ -6,7 +6,7 @@
 /*   By: jcluzet <jcluzet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/18 16:22:36 by jcluzet           #+#    #+#             */
-/*   Updated: 2021/10/25 14:26:34 by jcluzet          ###   ########.fr       */
+/*   Updated: 2021/10/25 15:01:24 by jcluzet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ void	stockargs(int argc, char **argv, t_argv *arg)
 	arg->time_td = ft_atoi(argv[2]);
 	arg->time_te = ft_atoi(argv[3]);
 	arg->time_ts = ft_atoi(argv[4]);
-	if (init(arg) == 1)
-		showerror("Initialisation fail");
 	if (argc == 6)
 		arg->time_de = ft_atoi(argv[5]);
 	else
 		arg->time_de = -1;
+	if (init(arg) == 1)
+		showerror("Initialisation fail");
 }

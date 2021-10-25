@@ -6,7 +6,7 @@
 /*   By: jcluzet <jcluzet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/01 23:20:43 by jcluzet           #+#    #+#             */
-/*   Updated: 2021/10/25 14:01:55 by jcluzet          ###   ########.fr       */
+/*   Updated: 2021/10/25 15:03:13 by jcluzet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	init(t_argv *arg)
 	i = arg->nb_philo;
 	arg->is_dead = 0;
 	arg->all_ate = 0;
+	if (arg->nb_philo > 250)
+		showerror("You can't use more than 250 philosophers");
 	if (pthread_mutex_init(&(arg->writing), NULL))
 		return (1);
 	if (pthread_mutex_init(&(arg->eating), NULL))
@@ -47,18 +49,11 @@ void	showerror(char *str)
 
 void	exit_launcher(t_argv *arg)
 {
-	t_philo	*ph;
-	int		i;
+	int	i;
 
-	i = 0;
-	ph = arg->philosophers;
-	i = arg->nb_philo;
-	while (--i > 0)
-		pthread_join(ph[i].thread_nb, NULL);
 	i = -1;
 	while (++i < arg->nb_philo)
 		pthread_mutex_destroy(&(arg->forks[i]));
 	pthread_mutex_destroy(&(arg->writing));
 	pthread_mutex_destroy(&(arg->eating));
-	exit(0);
 }

@@ -6,14 +6,16 @@
 /*   By: jcluzet <jcluzet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/18 15:32:41 by jcluzet           #+#    #+#             */
-/*   Updated: 2021/10/25 14:01:17 by jcluzet          ###   ########.fr       */
+/*   Updated: 2021/10/25 14:37:33 by jcluzet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include <libc.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
 # include <sys/time.h>
 # include <pthread.h>
 
@@ -35,7 +37,7 @@ typedef struct s_argv
 	pthread_mutex_t	eating;
 	pthread_mutex_t	forks[250];
 	pthread_mutex_t	writing;
-	long long		first_timestamp;
+	long long		first_time;
 	int				is_dead;
 	int				nb_philo;
 	int				all_ate;

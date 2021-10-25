@@ -6,7 +6,7 @@
 /*   By: jcluzet <jcluzet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 01:24:26 by jcluzet           #+#    #+#             */
-/*   Updated: 2021/10/25 14:00:51 by jcluzet          ###   ########.fr       */
+/*   Updated: 2021/10/25 15:02:37 by jcluzet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ void	starter(t_argv *arg)
 
 	i = 0;
 	ph = arg->philosophers;
-	arg->first_timestamp = stock_time();
+	arg->first_time = stock_time();
 	while (i < arg->nb_philo)
 	{
 		if (pthread_create(&(ph[i].thread_nb), NULL, life, &(ph[i])))
-			showerror("Impossible de creer un nouveau thread");
+			showerror("Unable to create a thread");
 		ph[i].last_eat = stock_time();
 		i++;
 	}
@@ -52,10 +52,9 @@ void	is_dead(t_argv *arg, t_philo *ph)
 		{
 			pthread_mutex_lock(&(arg->eating));
 			if ((stock_time() - ph[i].last_eat) > arg->time_td)
-			{
 				print_action(arg, i + 1, "\033[0;31mis dead...\033[m");
+			if ((stock_time() - ph[i].last_eat) > arg->time_td)
 				arg->is_dead = 1;
-			}
 			pthread_mutex_unlock(&(arg->eating));
 			usleep(100);
 		}
@@ -72,13 +71,10 @@ void	is_dead(t_argv *arg, t_philo *ph)
 
 long int	actual_time(void)
 {
-	long int			time;
 	struct timeval		current_time;
 
-	time = 0;
 	if (gettimeofday(&current_time, NULL) == -1)
-		showerror("Gettimeofday returned -1\n");
-	time = (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000);
+		showerror("gettimeofday error\n");
 	return (current_time.tv_usec);
 }
 

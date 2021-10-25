@@ -6,7 +6,7 @@
 /*   By: jcluzet <jcluzet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/18 16:30:11 by jcluzet           #+#    #+#             */
-/*   Updated: 2021/10/25 03:32:19 by jcluzet          ###   ########.fr       */
+/*   Updated: 2021/10/25 14:57:04 by jcluzet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,8 @@ void	print_action(t_argv *arg, int nb, char *msg)
 {
 	pthread_mutex_lock(&(arg->writing));
 	if (!(arg->is_dead))
-	{
-		printf("﹝ \033[0;31m");
-		printf("%4lli \033[m", stock_time() - arg->first_timestamp);
-		printf("﹞ ");
-		printf("\033[0;32m%i\033[m", nb);
-		printf("  ➣ %s\n", msg);
-	}
+		printf("﹝ \033[0;31m%4lli \033[m﹞ \033[0;32m%i\033[m  ➣ %s\n",
+			stock_time() - arg->first_time, nb, msg);
 	pthread_mutex_unlock(&(arg->writing));
 }
 
