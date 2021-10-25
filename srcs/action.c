@@ -10,20 +10,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../inc/philo.h"
+#	include "../inc/philo.h"
 
 void	eating(t_philo *philo)
 {
-	t_argv      *arg;
+	t_argv	*arg;
 
 	arg = philo->p_arg;
 	pthread_mutex_lock(&(arg->forks[philo->l_fork]));
 	print_action(arg, philo->nb, "has taken a fork");
 	pthread_mutex_lock(&(arg->forks[philo->r_fork]));
-    print_action(arg, philo->nb, "has taken a fork");
+	print_action(arg, philo->nb, "has taken a fork");
 	pthread_mutex_lock(&(arg->eating));
 	print_action(arg, philo->nb, "is eating");
-    philo->last_eat = stock_time();
+	philo->last_eat = stock_time();
 	pthread_mutex_unlock(&(arg->eating));
 	sleep_time(arg->time_te, arg);
 	(philo->nb_ate)++;
@@ -31,15 +31,15 @@ void	eating(t_philo *philo)
 	pthread_mutex_unlock(&(arg->forks[philo->r_fork]));
 }
 
-void		sleep_time(long long time, t_argv *arg)
+void	sleep_time(long long time, t_argv *arg)
 {
-	long long i;
+	long long	i;
 
 	i = stock_time();
 	while (!(arg->is_dead))
 	{
 		if ((stock_time() - i) >= time)
-			break ; 
+			break ;
 		usleep(50);
 	}
 }
