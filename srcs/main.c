@@ -6,7 +6,7 @@
 /*   By: jcluzet <jcluzet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 01:24:26 by jcluzet           #+#    #+#             */
-/*   Updated: 2021/10/25 15:24:24 by jcluzet          ###   ########.fr       */
+/*   Updated: 2021/10/26 17:44:05 by jcluzet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,9 @@ void	starter(t_argv *arg)
 	{
 		if (pthread_create(&(ph[i].thread_nb), NULL, life, &(ph[i])))
 			showerror("Unable to create a thread");
+		pthread_mutex_lock(&(arg->last_eat));
 		ph[i].last_eat = stock_time();
+		pthread_mutex_unlock(&(arg->last_eat));
 		i++;
 	}
 	is_dead(arg, ph);
@@ -54,18 +56,20 @@ void	is_dead(t_argv *arg, t_philo *ph)
 			if ((stock_time() - ph[i].last_eat) > arg->time_td)
 				print_action(arg, i + 1, "\033[0;31mis dead...\033[m");
 			if ((stock_time() - ph[i].last_eat) > arg->time_td)
-				arg->is_dead = 1;
+				arg->is_dead = 1; // pose blem 
 			pthread_mutex_unlock(&(arg->eating));
 			usleep(100);
 		}
 		if (arg->is_dead)
 			break ;
 		i = 0;
+		pthread_mutex_lock(&(arg->eating));
 		while (arg->time_de != -1 && i < arg->nb_philo
 			&& ph[i].nb_ate >= arg->time_de)
 			i++;
 		if (i == arg->nb_philo)
 			arg->all_ate = 1;
+		pthread_mutex_unlock(&(arg->eating));
 	}
 }
 

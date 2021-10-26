@@ -6,7 +6,7 @@
 /*   By: jcluzet <jcluzet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/18 15:32:41 by jcluzet           #+#    #+#             */
-/*   Updated: 2021/10/25 14:37:33 by jcluzet          ###   ########.fr       */
+/*   Updated: 2021/10/26 17:38:21 by jcluzet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_philo
 typedef struct s_argv
 {
 	pthread_mutex_t	eating;
+	pthread_mutex_t last_eat;
 	pthread_mutex_t	forks[250];
 	pthread_mutex_t	writing;
 	long long		first_time;

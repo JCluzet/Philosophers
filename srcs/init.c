@@ -6,7 +6,7 @@
 /*   By: jcluzet <jcluzet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/01 23:20:43 by jcluzet           #+#    #+#             */
-/*   Updated: 2021/10/25 15:26:26 by jcluzet          ###   ########.fr       */
+/*   Updated: 2021/10/26 17:46:44 by jcluzet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int	init(t_argv *arg)
 	if (pthread_mutex_init(&(arg->writing), NULL))
 		return (1);
 	if (pthread_mutex_init(&(arg->eating), NULL))
+		return (1);
+	if (pthread_mutex_init(&(arg->last_eat), NULL))
 		return (1);
 	while (--i >= 0)
 	{
@@ -54,11 +56,12 @@ void	exit_launcher(t_argv *arg)
 
 	ph = arg->philosophers;
 	i = arg->nb_philo;
-	while (--i > 0)
+	while (--i >= 0)
 		pthread_join(ph[i].thread_nb, NULL);
 	i = 0;
 	while (++i < arg->nb_philo)
 		pthread_mutex_destroy(&(arg->forks[i]));
 	pthread_mutex_destroy(&(arg->writing));
 	pthread_mutex_destroy(&(arg->eating));
+	pthread_mutex_destroy(&(arg->last_eat));
 }
