@@ -48,7 +48,10 @@ void	is_dead(t_argv *arg, t_philo *ph)
 		checkdeath(arg, ph, i);
 		pthread_mutex_lock(&(arg->dead_check));
 		if (arg->is_dead)
+		{
+			pthread_mutex_unlock(&(arg->dead_check));
 			break ;
+		}
 		i = 0;
 		while (arg->time_de != -1 && i < arg->nb_philo
 			&& ph[i].nb_ate >= arg->time_de)

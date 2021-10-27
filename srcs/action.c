@@ -38,15 +38,17 @@ void	eating(t_philo *philo)
 void	sleep_time(long long time, t_argv *arg)
 {
 	long long	i;
+	int v;
 
+	v = 0;
 	i = stock_time();
 	pthread_mutex_lock(&(arg->dead_check));
-	while (!(arg->is_dead))
+	while (!(arg->is_dead) && v == 0)
 	{
 		pthread_mutex_unlock(&(arg->dead_check));
-		if ((stock_time() - i) >= time)
-			break ;
 		usleep(50);
+		if ((stock_time() - i) >= time)
+			v = -1 ;
 		pthread_mutex_lock(&(arg->dead_check));
 	}
 	pthread_mutex_unlock(&(arg->dead_check));
