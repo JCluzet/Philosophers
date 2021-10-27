@@ -12,7 +12,7 @@ NAME        := philo
 BIMLX       := OFF
 CC          := clang
 RM		    := rm -f
-CFLAGS      := -Wall -Wextra -Werror -lpthread -fsanitize=thread -g3
+CFLAGS      := -Wall -Wextra -Werror -lpthread
 
 ################################################################################
 #                                 PROGRAM'S SRCS                               #

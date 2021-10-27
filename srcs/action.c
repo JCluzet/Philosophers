@@ -6,7 +6,7 @@
 /*   By: jcluzet <jcluzet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 01:24:26 by jcluzet           #+#    #+#             */
-/*   Updated: 2021/10/26 17:44:36 by jcluzet          ###   ########.fr       */
+/*   Updated: 2021/10/27 02:36:15 by jcluzet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ void	eating(t_philo *philo)
 	pthread_mutex_unlock(&(arg->last_eat));
 	pthread_mutex_unlock(&(arg->eating));
 	sleep_time(arg->time_te, arg);
-	pthread_mutex_lock(&(arg->eating));
-	(philo->nb_ate)++; // lui ?
-	pthread_mutex_unlock(&(arg->eating));
+	pthread_mutex_lock(&(arg->dead_check));
+	philo->nb_ate++;
+	pthread_mutex_unlock(&(arg->dead_check));
 	pthread_mutex_unlock(&(arg->forks[philo->l_fork]));
 	pthread_mutex_unlock(&(arg->forks[philo->r_fork]));
 }
@@ -40,14 +40,23 @@ void	sleep_time(long long time, t_argv *arg)
 	long long	i;
 
 	i = stock_time();
-	pthread_mutex_lock(&(arg->eating)); // rajout ? 
-	while (!(arg->is_dead)) // pose blem
+	pthread_mutex_lock(&(arg->dead_check));
+	while (!(arg->is_dead))
 	{
-		pthread_mutex_unlock(&(arg->eating)); // rajout ?
+		pthread_mutex_unlock(&(arg->dead_check));
 		if ((stock_time() - i) >= time)
 			break ;
 		usleep(50);
-		pthread_mutex_lock(&(arg->eating)); // rajout ?
+		pthread_mutex_lock(&(arg->dead_check));
 	}
-	pthread_mutex_unlock(&(arg->eating)); // rajout ?
+	pthread_mutex_unlock(&(arg->dead_check));
+}
+
+long int	actual_time(void)
+{
+	struct timeval		current_time;
+
+	if (gettimeofday(&current_time, NULL) == -1)
+		showerror("gettimeofday error\n");
+	return (current_time.tv_usec);
 }

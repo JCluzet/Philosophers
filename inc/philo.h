@@ -6,7 +6,7 @@
 /*   By: jcluzet <jcluzet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/18 15:32:41 by jcluzet           #+#    #+#             */
-/*   Updated: 2021/10/26 17:38:21 by jcluzet          ###   ########.fr       */
+/*   Updated: 2021/10/27 02:34:43 by jcluzet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,11 @@ typedef struct s_philo
 typedef struct s_argv
 {
 	pthread_mutex_t	eating;
-	pthread_mutex_t last_eat;
 	pthread_mutex_t	forks[250];
 	pthread_mutex_t	writing;
+	pthread_mutex_t	dead_check;
+	pthread_mutex_t	last_eat;
+	pthread_mutex_t	ate;
 	long long		first_time;
 	int				is_dead;
 	int				nb_philo;
@@ -52,8 +54,10 @@ typedef struct s_argv
 void		checkargs(int argc, char **argv);
 void		showerror(char *str);
 int			ft_strlen(char *str);
+int			init_mutex(t_argv *arg);
 void		starter(t_argv *arg);
 int			init(t_argv *argv);
+void		checkdeath(t_argv *arg, t_philo *ph, int i);
 void		eating(t_philo *philo);
 void		exit_launcher(t_argv *arg);
 long long	stock_time(void);
