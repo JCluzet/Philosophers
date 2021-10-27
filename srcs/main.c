@@ -6,7 +6,7 @@
 /*   By: jcluzet <jcluzet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 01:24:26 by jcluzet           #+#    #+#             */
-/*   Updated: 2021/10/27 02:58:31 by jcluzet          ###   ########.fr       */
+/*   Updated: 2021/10/27 16:02:12 by jcluzet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ void	*life(void *life)
 		print_action(argv, ph->nb, "is thinking");
 		pthread_mutex_lock(&(argv->dead_check));
 	}
-	pthread_mutex_unlock(&(argv->dead_check));
 	return (NULL);
 }
 
@@ -102,7 +101,6 @@ void	starter(t_argv *arg)
 	{
 		if (pthread_create(&(ph[i].thread_nb), NULL, life, &(ph[i])))
 			showerror("Unable to create a thread");
-		pthread_detach(ph[i].thread_nb);
 		pthread_mutex_lock(&(arg->last_eat));
 		ph[i].last_eat = stock_time();
 		pthread_mutex_unlock(&(arg->last_eat));

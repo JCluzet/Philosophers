@@ -6,7 +6,7 @@
 /*   By: jcluzet <jcluzet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/01 23:20:43 by jcluzet           #+#    #+#             */
-/*   Updated: 2021/10/27 02:54:41 by jcluzet          ###   ########.fr       */
+/*   Updated: 2021/10/27 16:01:48 by jcluzet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	init(t_argv *arg)
 {
 	int	i;
 
-	i = arg->nb_philo;
+	i = arg->nb_philo + 1;
 	arg->is_dead = 0;
 	arg->all_ate = 0;
 	if (arg->nb_philo > 250)
