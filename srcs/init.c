@@ -6,7 +6,7 @@
 /*   By: jcluzet <jcluzet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/01 23:20:43 by jcluzet           #+#    #+#             */
-/*   Updated: 2021/10/27 02:29:31 by jcluzet          ###   ########.fr       */
+/*   Updated: 2021/10/27 02:54:41 by jcluzet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,5 @@ void	exit_launcher(t_argv *arg)
 	pthread_mutex_destroy(&(arg->dead_check));
 	pthread_mutex_destroy(&(arg->last_eat));
 	pthread_mutex_destroy(&(arg->ate));
+	exit(0);
 }
