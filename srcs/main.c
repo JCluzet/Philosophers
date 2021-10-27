@@ -6,7 +6,7 @@
 /*   By: jcluzet <jcluzet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 01:24:26 by jcluzet           #+#    #+#             */
-/*   Updated: 2021/10/27 16:02:12 by jcluzet          ###   ########.fr       */
+/*   Updated: 2021/10/25 15:24:24 by jcluzet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,76 +22,6 @@ int	main(int argc, char **argv)
 	return (0);
 }
 
-void	checkdeath(t_argv *arg, t_philo *ph, int i)
-{
-	while (++i < arg->nb_philo && !(arg->is_dead))
-	{
-		pthread_mutex_lock(&(arg->eating));
-		if ((stock_time() - ph[i].last_eat) > arg->time_td)
-			print_action(arg, i + 1, "\033[0;31mis dead...\033[m");
-		pthread_mutex_lock(&(arg->dead_check));
-		if ((stock_time() - ph[i].last_eat) > arg->time_td)
-			arg->is_dead = 1;
-		pthread_mutex_unlock(&(arg->dead_check));
-		pthread_mutex_unlock(&(arg->eating));
-		usleep(100);
-	}
-}
-
-void	is_dead(t_argv *arg, t_philo *ph)
-{
-	int	i;
-
-	while (!(arg->all_ate))
-	{
-		i = -1;
-		checkdeath(arg, ph, i);
-		pthread_mutex_lock(&(arg->dead_check));
-		if (arg->is_dead)
-		{
-			pthread_mutex_unlock(&(arg->dead_check));
-			break ;
-		}
-		i = 0;
-		while (arg->time_de != -1 && i < arg->nb_philo
-			&& ph[i].nb_ate >= arg->time_de)
-			i++;
-		pthread_mutex_unlock(&(arg->dead_check));
-		if (i == arg->nb_philo)
-		{
-			pthread_mutex_lock(&(arg->ate));
-			arg->all_ate = 1;
-			pthread_mutex_unlock(&(arg->ate));
-		}
-	}
-}
-
-void	*life(void *life)
-{
-	t_philo		*ph;
-	t_argv		*argv;
-
-	ph = (t_philo *)life;
-	argv = ph->p_arg;
-	if (ph->nb % 2 == 0)
-		usleep(1500);
-	pthread_mutex_lock(&(argv->dead_check));
-	while (!(argv->is_dead))
-	{
-		pthread_mutex_unlock(&(argv->dead_check));
-		eating(ph);
-		pthread_mutex_lock(&(argv->ate));
-		if (argv->all_ate)
-			break ;
-		pthread_mutex_unlock(&(argv->ate));
-		print_action(argv, ph->nb, "is sleeping");
-		sleep_time(argv->time_ts, argv);
-		print_action(argv, ph->nb, "is thinking");
-		pthread_mutex_lock(&(argv->dead_check));
-	}
-	return (NULL);
-}
-
 void	starter(t_argv *arg)
 {
 	int		i;
@@ -104,11 +34,70 @@ void	starter(t_argv *arg)
 	{
 		if (pthread_create(&(ph[i].thread_nb), NULL, life, &(ph[i])))
 			showerror("Unable to create a thread");
-		pthread_mutex_lock(&(arg->last_eat));
 		ph[i].last_eat = stock_time();
-		pthread_mutex_unlock(&(arg->last_eat));
 		i++;
 	}
 	is_dead(arg, ph);
 	exit_launcher(arg);
+}
+
+void	is_dead(t_argv *arg, t_philo *ph)
+{
+	int	i;
+
+	while (!(arg->all_ate))
+	{
+		i = -1;
+		while (++i < arg->nb_philo && !(arg->is_dead))
+		{
+			pthread_mutex_lock(&(arg->eating));
+			if ((stock_time() - ph[i].last_eat) > arg->time_td)
+				print_action(arg, i + 1, "\033[0;31mis dead...\033[m");
+			if ((stock_time() - ph[i].last_eat) > arg->time_td)
+				arg->is_dead = 1;
+			pthread_mutex_unlock(&(arg->eating));
+			usleep(100);
+		}
+		if (arg->is_dead)
+			break ;
+		i = 0;
+		while (arg->time_de != -1 && i < arg->nb_philo
+			&& ph[i].nb_ate >= arg->time_de)
+			i++;
+		if (i == arg->nb_philo)
+			arg->all_ate = 1;
+	}
+}
+
+long int	actual_time(void)
+{
+	struct timeval		current_time;
+
+	if (gettimeofday(&current_time, NULL) == -1)
+		showerror("gettimeofday error\n");
+	return (current_time.tv_usec);
+}
+
+void	*life(void *life)
+{
+	t_philo		*ph;
+	t_argv		*argv;
+	int			i;
+
+	i = 0;
+	ph = (t_philo *)life;
+	argv = ph->p_arg;
+	if (ph->nb % 2 == 0)
+		usleep(1500);
+	while (!(argv->is_dead))
+	{
+		eating(ph);
+		if (argv->all_ate)
+			break ;
+		print_action(argv, ph->nb, "is sleeping");
+		sleep_time(argv->time_ts, argv);
+		print_action(argv, ph->nb, "is thinking");
+		i++;
+	}
+	return (NULL);
 }
