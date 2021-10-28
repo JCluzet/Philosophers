@@ -6,7 +6,7 @@
 /*   By: jcluzet <jcluzet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 01:24:26 by jcluzet           #+#    #+#             */
-/*   Updated: 2021/10/28 03:10:23 by jcluzet          ###   ########.fr       */
+/*   Updated: 2021/10/28 03:19:20 by jcluzet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	eating(t_philo *philo)
 	pthread_mutex_lock(&(arg->eating));
 	(philo->nb_ate)++;
 	pthread_mutex_unlock(&(arg->eating));
-	pthread_mutex_unlock(&(arg->forks[philo->l_fork]));
 	pthread_mutex_unlock(&(arg->forks[philo->r_fork]));
+	pthread_mutex_unlock(&(arg->forks[philo->l_fork]));
 }
 
 void	sleep_time(long long time, t_argv *arg)
