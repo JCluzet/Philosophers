@@ -6,7 +6,7 @@
 /*   By: jcluzet <jcluzet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 01:24:26 by jcluzet           #+#    #+#             */
-/*   Updated: 2021/10/28 02:45:59 by jcluzet          ###   ########.fr       */
+/*   Updated: 2021/10/28 02:59:11 by jcluzet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,9 @@ void	starter(t_argv *arg)
 	{
 		if (pthread_create(&(ph[i].thread_nb), NULL, life, &(ph[i])))
 			showerror("Unable to create a thread");
+		pthread_mutex_lock(&(arg->eating));
 		ph[i].last_eat = stock_time();
+		pthread_mutex_unlock(&(arg->eating));
 		i++;
 	}
 	is_dead(arg, ph);
@@ -89,15 +91,19 @@ void	*life(void *life)
 	argv = ph->p_arg;
 	if (ph->nb % 2 == 0)
 		usleep(1500);
-	while (!(argv->is_dead))
+	pthread_mutex_lock(&(argv->eating));
+	while (!(argv->is_dead) && !(argv->all_ate))
 	{
+		pthread_mutex_unlock(&(argv->eating));
 		eating(ph);
-		if (argv->all_ate)
-			break ;
+		pthread_mutex_lock(&(argv->eating));
 		print_action(argv, ph->nb, "is sleeping");
+		pthread_mutex_unlock(&(argv->eating));
 		sleep_time(argv->time_ts, argv);
+		pthread_mutex_lock(&(argv->eating));
 		print_action(argv, ph->nb, "is thinking");
 		i++;
 	}
+	pthread_mutex_unlock(&(argv->eating));
 	return (NULL);
 }

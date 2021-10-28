@@ -6,7 +6,7 @@
 /*   By: jcluzet <jcluzet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 01:24:26 by jcluzet           #+#    #+#             */
-/*   Updated: 2021/10/28 02:48:13 by jcluzet          ###   ########.fr       */
+/*   Updated: 2021/10/28 02:56:10 by jcluzet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@ void	eating(t_philo *philo)
 
 	arg = philo->p_arg;
 	pthread_mutex_lock(&(arg->forks[philo->l_fork]));
-	print_action(arg, philo->nb, "has taken a fork");
-	pthread_mutex_lock(&(arg->forks[philo->r_fork]));
-	print_action(arg, philo->nb, "has taken a fork");
 	pthread_mutex_lock(&(arg->eating));
+	print_action(arg, philo->nb, "has taken a fork");
+	pthread_mutex_unlock(&(arg->eating));
+	pthread_mutex_lock(&(arg->forks[philo->r_fork]));
+	pthread_mutex_lock(&(arg->eating));
+	print_action(arg, philo->nb, "has taken a fork");
 	print_action(arg, philo->nb, "is eating");
 	philo->last_eat = stock_time();
 	pthread_mutex_unlock(&(arg->eating));
