@@ -12,7 +12,7 @@ NAME        := philo
 BIMLX       := OFF
 CC          := clang
 RM		    := rm -f
-CFLAGS      := -Wall -Wextra -Werror -lpthread -fsanitize=thread -g3
+CFLAGS      := -Wall -Wextra -Werror -lpthread
 
 ################################################################################
 #                                 PROGRAM'S SRCS                               #
@@ -30,6 +30,7 @@ SRCS        :=      srcs/configargs.c \
 					srcs/utils.c \
 					srcs/main.c \
 					srcs/action.c \
+					srcs/check_death.c \
 					
 
 ################################################################################
