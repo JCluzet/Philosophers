@@ -6,7 +6,7 @@
 /*   By: jcluzet <jcluzet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 01:24:26 by jcluzet           #+#    #+#             */
-/*   Updated: 2021/10/28 02:59:11 by jcluzet          ###   ########.fr       */
+/*   Updated: 2021/10/28 03:02:03 by jcluzet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,13 @@ void	is_dead(t_argv *arg, t_philo *ph)
 		if (arg->is_dead)
 			break ;
 		i = 0;
+		pthread_mutex_lock(&(arg->eating));
 		while (arg->time_de != -1 && i < arg->nb_philo
 			&& ph[i].nb_ate >= arg->time_de)
 			i++;
 		if (i == arg->nb_philo)
 			arg->all_ate = 1;
+		pthread_mutex_unlock(&(arg->eating));
 	}
 }
 
