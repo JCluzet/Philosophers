@@ -6,7 +6,7 @@
 /*   By: jcluzet <jcluzet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/01 23:20:43 by jcluzet           #+#    #+#             */
-/*   Updated: 2021/10/28 03:09:32 by jcluzet          ###   ########.fr       */
+/*   Updated: 2021/10/28 03:21:58 by jcluzet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ void	exit_launcher(t_argv *arg)
 
 	i = 0;
 	ph = arg->philosophers;
-	if (arg->nb_philo == 1)
-		pthread_mutex_unlock(&(arg->forks[ph[0].l_fork]));
+	// if (arg->nb_philo == 1)
+	// 	pthread_mutex_unlock(&(arg->forks[ph[0].l_fork]));
 	while (i < arg->nb_philo)
 	{
 		pthread_join(ph[i].thread_nb, NULL);
