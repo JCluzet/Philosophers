@@ -6,7 +6,7 @@
 /*   By: jcluzet <jcluzet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 01:24:26 by jcluzet           #+#    #+#             */
-/*   Updated: 2021/10/25 03:35:21 by jcluzet          ###   ########.fr       */
+/*   Updated: 2021/10/28 02:48:13 by jcluzet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,12 @@ void	sleep_time(long long time, t_argv *arg)
 	long long	i;
 
 	i = stock_time();
-	while (!(arg->is_dead))
+	pthread_mutex_lock(&(arg->eating));
+	while (!(arg->is_dead) && (!((stock_time() - i) >= time)))
 	{
-		if ((stock_time() - i) >= time)
-			break ;
+		pthread_mutex_unlock(&(arg->eating));
 		usleep(50);
+		pthread_mutex_lock(&(arg->eating));
 	}
+	pthread_mutex_unlock(&(arg->eating));
 }
