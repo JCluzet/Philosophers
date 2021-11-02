@@ -3,7 +3,7 @@
 ### This project teaches the notion of Thread and Mutex.
 The project consists in making X Philosophers live at the same time as a thread, each one has to eat, think and sleep.
 
-Each action of a philosopher must be indicated like this: timestamp_in_ms X has taken a fork (this is for action > taking fork)
+Each action of a philosopher must be output like this: timestamp_in_ms X has taken a fork
 
 ⚠️ 1 philo can only eat with 2 forks in hand, and the forks cannot be shared!
 
